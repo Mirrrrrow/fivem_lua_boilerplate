@@ -74,10 +74,7 @@ function Utils.createInteractablePed(ped, options)
 
             target:removeLocalEntity(entity)
 
-            if DoesEntityExist(entity) then
-                SetEntityAsMissionEntity(entity, false, true)
-                DeleteEntity(entity)
-            end
+            Utils.deleteEntity(entity)
 
             self.entity = nil
         end
@@ -95,14 +92,20 @@ function Utils.onNet(event, fn)
     end)
 end
 
+---**`client`**
+---@param entity number
+function Utils.deleteEntity(entity)
+    if DoesEntityExist(entity) then
+        SetEntityAsMissionEntity(entity, false, true)
+        DeleteEntity(entity)
+    end
+end
+
 AddEventHandler('onResourceStop', function(resource)
     if resource ~= cache.resource then return end
 
     for _, entity in pairs(spawnedPeds) do
-        if DoesEntityExist(entity) then
-            SetEntityAsMissionEntity(entity, false, true)
-            DeleteEntity(entity)
-        end
+        Utils.deleteEntity(entity)
     end
 end)
 

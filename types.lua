@@ -13,3 +13,8 @@
 
 ---@class Ped : PedStruct
 ---@field coords vector4|{ x: number, y: number, z: number, w: number }
+
+---@alias DEBUG_LEVEL 0|1|2
+
+---@class Config
+---@field debugLevel DEBUG_LEVEL

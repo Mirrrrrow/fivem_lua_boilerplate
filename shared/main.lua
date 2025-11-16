@@ -1,3 +1,5 @@
-lib.locale()
+Shared = {}
+Shared.Config = require 'config'
+Shared.Functions = {}
 
-require 'shared.config'
+lib.locale()

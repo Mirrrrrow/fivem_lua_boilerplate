@@ -1,7 +1,7 @@
 fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
-use_experimental_fxv2_oal 'yes'
+use_fxv2_oal 'yes'
 
 author 'Mirow'
 name 'fivem_lua_boilerplate'

@@ -1,11 +1,10 @@
-local Utils = {}
 local spawnedPeds, spawnedPedCount = {}, 0
 local target = exports.ox_target
 
 ---**`client`**
 ---@param data Blip
 ---@return number
-function Utils.createBlip(data)
+function Client.Functions.createBlip(data)
     local coords = data.coords
     local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
 
@@ -23,7 +22,7 @@ end
 ---**`client`**
 ---@param data Ped
 ---@return number?
-function Utils.spawnPed(data)
+function Client.Functions.spawnPed(data)
     local model = lib.requestModel(data.model)
     if not model then return end
 
@@ -53,7 +52,7 @@ end
 ---**`client`**
 ---@param ped Ped
 ---@param options OxTargetEntity|OxTargetEntity[]
-function Utils.createInteractablePed(ped, options)
+function Client.Functions.createInteractablePed(ped, options)
     local coords = ped.coords
     return lib.points.new({
         coords = coords.xyz,
@@ -61,7 +60,7 @@ function Utils.createInteractablePed(ped, options)
         onEnter = function(self)
             if self.entity then return end
 
-            local entity = Utils.spawnPed(ped)
+            local entity = Client.Functions.spawnPed(ped)
             if not entity then return end
 
             target:addLocalEntity(entity, options)
@@ -74,7 +73,7 @@ function Utils.createInteractablePed(ped, options)
 
             target:removeLocalEntity(entity)
 
-            Utils.deleteEntity(entity)
+            Client.Functions.deleteEntity(entity)
 
             self.entity = nil
         end
@@ -84,7 +83,7 @@ end
 ---**`client`**
 ---@param event string
 ---@param fn function
-function Utils.onNet(event, fn)
+function Client.Functions.onNet(event, fn)
     RegisterNetEvent(event, function(...)
         if source == '' then return end
 
@@ -94,19 +93,16 @@ end
 
 ---**`client`**
 ---@param entity number
-function Utils.deleteEntity(entity)
+function Client.Functions.deleteEntity(entity)
     if DoesEntityExist(entity) then
         SetEntityAsMissionEntity(entity, false, true)
         DeleteEntity(entity)
     end
 end
 
-AddEventHandler('onResourceStop', function(resource)
-    if resource ~= cache.resource then return end
-
+---**`client`**
+function Client.Functions.cleanup()
     for _, entity in pairs(spawnedPeds) do
-        Utils.deleteEntity(entity)
+        Client.Functions.deleteEntity(entity)
     end
-end)
-
-return Utils
+end

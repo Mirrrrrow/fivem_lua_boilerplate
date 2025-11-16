@@ -1,1 +1,4 @@
-require 'server.config'
+Server = {}
+Server.Functions = {}
+
+require 'server.utils'
